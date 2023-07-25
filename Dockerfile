@@ -31,7 +31,7 @@ RUN apt-get update -qq && apt-get -y install \
 
 RUN apt-get -y install libunistring-dev libaom-dev
 
-RUN apt-get -y install nasm libx264-dev libnuma-dev libvpx-dev libopus-dev
+RUN apt-get -y install nasm libx264-dev libx265-dev libnuma-dev libvpx-dev libopus-dev
 
 RUN mkdir -p ~/ffmpeg_sources ~/bin
 
@@ -45,7 +45,7 @@ make install
 
 RUN cd ~/ffmpeg_sources && \
 wget -O ffmpeg-snapshot.tar.bz2 https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \
-tar xjvf ffmpeg-snapshot.tar.bz2 && \
+tar xjvf ffmpeg-snapshot.tar.bz2 >/dev/null && \
 cd ffmpeg && \
 PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
   --prefix="$HOME/ffmpeg_build" \

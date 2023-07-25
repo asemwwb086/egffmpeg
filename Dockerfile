@@ -33,7 +33,15 @@ RUN apt-get -y install libunistring-dev libaom-dev libdav1d-dev
 
 RUN mkdir -p ~/ffmpeg_sources ~/bin
 
-RUN apt-get -y install nasm libx264-dev libnuma-dev libvpx-dev libfdk-aac-dev libopus-dev
+RUN apt-get -y install nasm libx264-dev libnuma-dev libvpx-dev libopus-dev
+
+RUN cd ~/ffmpeg_sources && \
+git -C fdk-aac pull 2> /dev/null || git clone --depth 1 https://github.com/mstorsjo/fdk-aac && \
+cd fdk-aac && \
+autoreconf -fiv && \
+./configure --prefix="$HOME/ffmpeg_build" --disable-shared && \
+make && \
+make install
 
 RUN cd ~/ffmpeg_sources && \
 wget -O ffmpeg-snapshot.tar.bz2 https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \

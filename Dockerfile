@@ -29,11 +29,11 @@ RUN apt-get update -qq && apt-get -y install \
   yasm \
   zlib1g-dev
 
-RUN apt-get install libunistring-dev libaom-dev libdav1d-dev
+RUN apt-get -y install libunistring-dev libaom-dev libdav1d-dev
 
 RUN mkdir -p ~/ffmpeg_sources ~/bin
 
-RUN apt-get install nasm libx264-dev libnuma-dev libvpx-dev libfdk-aac-dev libopus-dev
+RUN apt-get -y install nasm libx264-dev libnuma-dev libvpx-dev libfdk-aac-dev libopus-dev
 
 RUN cd ~/ffmpeg_sources && \
 wget -O ffmpeg-snapshot.tar.bz2 https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \

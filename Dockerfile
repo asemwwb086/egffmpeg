@@ -32,7 +32,7 @@ RUN apt-get update -qq && apt-get -y install \
 RUN mkdir -p ~/ffmpeg_sources ~/bin
 
 RUN cd ~/ffmpeg_sources && \
-wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.bz2 && \
+wget https://restless-recipe.driveindex.workers.dev/0:/nasm-2.15.05.tar.bz2 && \
 tar xjvf nasm-2.15.05.tar.bz2 && \
 cd nasm-2.15.05 && \
 ./autogen.sh && \

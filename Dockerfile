@@ -51,7 +51,7 @@ make -j$(cat /proc/cpuinfo | grep processor | wc -l) && \
 make install && \
 make distclean
 
-RUN sudo apt-get install libnuma-dev && \
+RUN apt-get install libnuma-dev && \
 cd ~/ffmpeg_sources && \
 wget -O x265.tar.bz2 https://bitbucket.org/multicoreware/x265_git/get/master.tar.bz2 && \
 tar xjvf x265.tar.bz2 && \

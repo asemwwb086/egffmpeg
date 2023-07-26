@@ -1,4 +1,4 @@
-FROM debian:11
+FROM debian:10
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=en_US.utf8
@@ -40,8 +40,9 @@ git -C fdk-aac pull 2> /dev/null || git clone --depth 1 https://github.com/mstor
 cd fdk-aac && \
 autoreconf -fiv && \
 ./configure --prefix="$HOME/ffmpeg_build" --disable-shared && \
-make && \
-make install
+make -j$(cat /proc/cpuinfo | grep processor | wc -l) && \
+make install && \
+make distclean
 
 RUN cd ~/ffmpeg_sources && \
 wget -O ffmpeg-snapshot.tar.bz2 https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \
@@ -50,6 +51,8 @@ cd ffmpeg && \
 PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
   --prefix="$HOME/ffmpeg_build" \
   --pkg-config-flags="--static" \
+  --extra-libs=-static \
+  --extra-cflags=--static \
   --extra-cflags="-I$HOME/ffmpeg_build/include" \
   --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
   --extra-libs="-lpthread -lm" \
@@ -68,8 +71,9 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./conf
   --enable-libx264 \
   --enable-libx265 \
   --enable-nonfree && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j$(cat /proc/cpuinfo | grep processor | wc -l) && \
 make install && \
+make distclean && \
 hash -r
 
 CMD bin/bash

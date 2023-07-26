@@ -37,7 +37,6 @@ tar xjvf nasm-2.15.05.tar.bz2 && \
 cd nasm-2.15.05 && \
 ./autogen.sh && \
 PATH="$HOME/bin:$PATH" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" && \
-make && \
 make -j$(cat /proc/cpuinfo | grep processor | wc -l) && \
 make install && \
 make distclean
@@ -46,7 +45,7 @@ RUN cd ~/ffmpeg_sources && \
 git -C x264 pull 2> /dev/null || git clone --depth 1 https://code.videolan.org/videolan/x264.git && \
 cd x264 && \
 PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --enable-pic && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" && \
 make -j$(cat /proc/cpuinfo | grep processor | wc -l) && \
 make install && \
 make distclean
@@ -57,7 +56,7 @@ wget -O x265.tar.bz2 https://bitbucket.org/multicoreware/x265_git/get/master.tar
 tar xjvf x265.tar.bz2 && \
 cd multicoreware*/build/linux && \
 PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED=off ../../source && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" && \
 make -j$(cat /proc/cpuinfo | grep processor | wc -l) && \
 make install && \
 make distclean
@@ -66,7 +65,7 @@ RUN cd ~/ffmpeg_sources && \
 git -C libvpx pull 2> /dev/null || git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git && \
 cd libvpx && \
 PATH="$HOME/bin:$PATH" ./configure --prefix="$HOME/ffmpeg_build" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" && \
 make -j$(cat /proc/cpuinfo | grep processor | wc -l) && \
 make install && \
 make distclean

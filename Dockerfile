@@ -51,7 +51,6 @@ cd ffmpeg && \
 PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
   --prefix="$HOME/ffmpeg_build" \
   --enable-gpl \
-  --enable-gnutls \
   --enable-libaom \
   --enable-libass \
   --enable-libfdk-aac \

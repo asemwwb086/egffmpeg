@@ -31,6 +31,17 @@ RUN apt-get update -qq && apt-get -y install \
 
 RUN mkdir -p ~/ffmpeg_sources ~/bin
 
+RUN apt-get -y install libnuma-dev && \
+cd ~/ffmpeg_sources && \
+wget -O x265.tar.bz2 https://bitbucket.org/multicoreware/x265_git/get/master.tar.bz2 && \
+tar xjvf x265.tar.bz2 && \
+cd multicoreware*/build/linux && \
+PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED=off ../../source && \
+PATH="$HOME/bin:$PATH" && \
+make -j$(cat /proc/cpuinfo | grep processor | wc -l) && \
+make install && \
+make clean
+
 RUN cd ~/ffmpeg_sources && \
 wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.bz2 && \
 tar xjvf nasm-2.15.05.tar.bz2 && \
@@ -45,17 +56,6 @@ RUN cd ~/ffmpeg_sources && \
 git -C x264 pull 2> /dev/null || git clone --depth 1 https://code.videolan.org/videolan/x264.git && \
 cd x264 && \
 PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --enable-pic && \
-PATH="$HOME/bin:$PATH" && \
-make -j$(cat /proc/cpuinfo | grep processor | wc -l) && \
-make install && \
-make distclean
-
-RUN apt-get -y install libnuma-dev && \
-cd ~/ffmpeg_sources && \
-wget -O x265.tar.bz2 https://bitbucket.org/multicoreware/x265_git/get/master.tar.bz2 && \
-tar xjvf x265.tar.bz2 && \
-cd multicoreware*/build/linux && \
-PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED=off ../../source && \
 PATH="$HOME/bin:$PATH" && \
 make -j$(cat /proc/cpuinfo | grep processor | wc -l) && \
 make install && \
